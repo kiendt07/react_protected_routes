@@ -31,10 +31,10 @@ function App() {
         <Route
           path="/*"
           element={
-            <Layout newArray={newArray} pageCount={pageCount} page={page} />
+            <Layout newArray={newArray} pageCount={pageCount} page={page} handleChange = {handleChange} />
           }
         >
-          <Route path="homepage" element={<HomePage jobs={newArray} />} />
+          <Route index element={<HomePage jobs={newArray} />} />
           {/* <Route path="/" element={<RequiredAuth />}>
             <Route path=":id" element={<DetailPage />} />
           </Route> */}
