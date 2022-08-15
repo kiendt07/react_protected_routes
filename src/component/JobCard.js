@@ -1,4 +1,4 @@
-import * as React from "react";
+import { React, useContext} from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Button } from "@mui/material";
@@ -9,12 +9,28 @@ import { Box, CardActionArea } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Chip from "@mui/material/Chip";
 import { Container } from "@mui/system";
+import { AuthContext } from "../component/AuthProvider";
 
 export default function JobCard({ job }) {
   const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
+
+  // Check if user is logged in yet?
+  // If yes -> navigate to Job Detail
+  // if no -> navigate to Login
+  const handleClick = () => {
+    if (auth.isLoggedIn) {
+      // logged in
+      navigate(`/${job.id}`)
+    } else {
+      // not logged in yet
+      navigate(`/loginpage?job=${job.id}`)
+    }
+  }
+
   return (
     <Card 
-    // onClick={() => navigate(`/loginpage`)}
+      onClick={() => handleClick()}
     >
       <CardActionArea>
         <CardContent sx={{ height: `12rem` }}>

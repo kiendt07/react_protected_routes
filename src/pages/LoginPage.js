@@ -31,6 +31,8 @@ function LoginPage() {
           email: data.email,
           isLoggedIn: true
         })
+
+        // if redirect_job
         navigate("/");
       } else {
         // Do nothing
