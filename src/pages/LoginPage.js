@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { AuthContext } from "../component/AuthProvider";
 import { tabScrollButtonClasses } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const { auth, setAuth } = useContext(AuthContext);
+  let navigate = useNavigate();
 
   const {
     register,
@@ -17,11 +19,28 @@ function LoginPage() {
   // const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
+    const EMAIL = 'phi@gmail.com'
+    const PASSWORD = '123456'
+
     try {
-      await setAuth({ ...auth, data });
-      console.log(auth, "1");
-      console.log(data, "2");
-      setError("afterSubmit", { message: "Server Response Error" });
+      // if email & password is correct
+      // change auth state to isLoggedIn = true
+      // navigate to Homepage
+      if (data.email === EMAIL && data.password === PASSWORD) {
+        setAuth({
+          email: data.email,
+          isLoggedIn: true
+        })
+        navigate("/");
+      } else {
+        // Do nothing
+        setError("afterSubmit", { message: "Wrong email/password" });
+      }
+
+      // await setAuth({ ...auth, data });
+      // console.log(auth, "1");
+      // console.log(data, "2");
+      // setError("afterSubmit", { message: "Server Response Error" });
     } catch (error) {
       console.log(error);
     }
@@ -40,8 +59,11 @@ function LoginPage() {
   return (
     <div>
       <h1>LoginPageTitle</h1>
-      <form onSubmit={() => handleSubmit(onSubmit)()}>
-        <div>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(onSubmit)()
+      }}>
+        {/* <div>
           <label htmlFor="username">Username</label>
           <input
             name="username"
@@ -49,7 +71,7 @@ function LoginPage() {
             autoComplete="off"
             {...register("username")}
           />
-        </div>
+        </div> */}
 
         <div>
           <label htmlFor="email">Email</label>
@@ -64,6 +86,16 @@ function LoginPage() {
           {/* {errors.email && <p>Email is required</p>} */}
         </div>
         <div>
+          <label htmlFor="password">Password</label>
+          <input
+            name="password"
+            type="password"
+            autoComplete="off"
+            {...register("password")}
+          />
+        </div>
+
+        {/* <div>
           <label>
             <select {...register("language")}>
               <option value="VN">VN</option>
@@ -71,7 +103,7 @@ function LoginPage() {
               <option value="DE">DE</option>
             </select>
           </label>
-        </div>
+        </div> */}
         <input type="submit" />
       </form>
     </div>
